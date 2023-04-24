@@ -9,6 +9,17 @@
 <body>
 <h1>Страница регистрации на события</h1>
 <div>
+    {% if user.is_authenticated %}
+        <p>Hi {{ user.username }}!</p>
+        <p><a href="{% url 'logout' %}">Log out</a></p>
+      {% else %}
+        <p>You are not logged in.</p>
+        <a href="{% url 'login' %}">Log In</a>
+      {% endif %}
+    {% block content %}
+    {% endblock content %}
+</div>
+<div>
 {% for event in events %}
     <p>{{ event.title }} <a href="{% url 'by_event' event.pk %}">Подробнее</a><p>
 {% endfor %}
