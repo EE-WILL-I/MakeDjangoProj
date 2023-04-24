@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'event/style.css' %}">
+    <meta charset="UTF-8">
+    <title> Событие</title>
+</head>
+<body>
+<h1> {{ current_event.title }}</h1>
+<p> Описание события: {{ current_event.desctiption }} </p>
+<p> Логотип события: {{ current_event.logo }} </p>
+<p> Дата начала события: {{ current_event.data_event }} </p>
+<p> Продолжительность: {{ current_event.duration }} часа(ов)</p>
+<p> Место проведения: {{ current_event.city }} </p>
+<a href="{% url 'index' %} ">Назад</a>
+
+
+</body>
+</html>
