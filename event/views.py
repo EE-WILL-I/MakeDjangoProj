@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
+
 from .models import Event
 
 from django.views.generic import ListView
