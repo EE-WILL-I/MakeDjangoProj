@@ -7,11 +7,22 @@
     <title> Событие</title>
 </head>
 <body>
-<h1> {{ current_event.title }}</h1>
+<h1> {{ current_event.name }}</h1>
 <p> Описание события: {{ current_event.desctiption }} </p>
-<p> Логотип события: {{ current_event.logo }} </p>
-<p> Дата начала события: {{ current_event.data_event }} </p>
-<p> Продолжительность: {{ current_event.duration }} часа(ов)</p>
+<p> Логотип события: </p>
+<img src="{{ current_event.logo.url}}" alt="img_error" style="max-height:300px">
+{% if current_event.status_event == '1'  %}
+    <p> Статус события: Не началось </p>
+{% endif %}
+{% if current_event.status_event == '2'  %}
+    <p> Статус события: В процессе </p>
+{% endif %}
+{% if current_event.status_event == '3'  %}
+    <p> Статус события: Завершено </p>
+{% endif %}
+</p>
+<p> Дата начала события: {{ current_event.data_start }} </p>
+<p> Дата конца события: {{ current_event.data_end }} </p>
 <p> Место проведения: {{ current_event.city }} </p>
 <a href="{% url 'index' %} ">Назад</a>
 

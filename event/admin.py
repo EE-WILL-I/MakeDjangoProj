@@ -1,19 +1,30 @@
 from django.contrib import admin
 from .models import Event
-from .models import User
+from .models import Users
+from .models import UsersEvents
 
 
 
 class EvAdmin(admin.ModelAdmin):
-    list_display = ('title', 'desctiption', 'data_event', 'city')
-    list_display_links = ('desctiption', 'title')
-    search_fields = ('title', 'desctiption')
-class UsAdmin(admin.ModelAdmin):
-    list_display = ('last_name', 'first_name', 'age', 'city')
-    list_display_links = ('last_name', 'first_name')
-    search_fields = ('last_name', 'first_name',)
-admin.site.register(Event,EvAdmin)
-admin.site.register(User,UsAdmin)
+    list_display = ('name', 'desctiption', 'logo', 'status_event', 'data_start', 'data_end', 'city')
+    list_display_links = ('name', 'desctiption', 'logo', 'status_event', 'data_start', 'data_end', 'city')
+    search_fields = ('name', 'desctiption', 'logo', 'status_event', 'data_start', 'data_end', 'city')
+
+
+admin.site.register(Event, EvAdmin)
+admin.site.register(Users)
+admin.site.register(UsersEvents)
+
+
+
+#class UsAdmin(admin.ModelAdmin):
+#    list_display = ('last_name', 'first_name', 'age', 'city')
+#    list_display_links = ('last_name', 'first_name')
+#    search_fields = ('last_name', 'first_name',)
+
+
+#admin.site.register(Event, EvAdmin)
+#admin.site.register(User, UsAdmin)
 
 
 # class User(models.Model):

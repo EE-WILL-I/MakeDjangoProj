@@ -10,19 +10,20 @@
 <h1>Страница регистрации на события</h1>
 <div>
     {% if user.is_authenticated %}
-        <p>Hi {{ user.username }}!</p>
-        <p><a href="{% url 'logout' %}">Log out</a></p>
+        <p>Здравствуй, {{ user.username }}!</p>
+        <p><a href="{% url 'logout' %}">Выйти из аккаунта</a></p>
+        <p><a href="{% url 'signup2' %}">Дополнить учетную запись</a></p>
       {% else %}
         <p>You are not logged in.</p>
-        <p><a href="{% url 'login' %}">Log In</a></p>
-        <p><a href="{% url 'signup' %}">Sing up</a></p>
+        <p><a href="{% url 'login' %}">Войти в аккаунт</a></p>
+        <p><a href="{% url 'signup1' %}">Создать учетную запись</a></p>
       {% endif %}
     {% block content %}
     {% endblock content %}
 </div>
 <div>
 {% for event in events %}
-    <p>{{ event.title }} <a href="{% url 'by_event' event.pk %}">Подробнее</a><p>
+    <p>{{ event.name }} <a href="{% url 'by_event' event.pk %}">Подробнее</a><p>
 {% endfor %}
 </div>
 </body>
