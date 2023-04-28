@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django.template import loader
 from .models import Event
 
-
 def index(request):
     template = loader.get_template('event/index.html')
     Event.objects.all()
@@ -17,9 +16,6 @@ def by_event(request, event_id):
     current_event = Event.objects.get(pk=event_id)
     context = {'bbs': bbs, 'current_event': current_event}
     return render(request, 'event/event.html', context)
-
-
-
 
 # class EventListView(ListView):
 #     model = Event
