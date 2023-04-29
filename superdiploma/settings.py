@@ -32,14 +32,14 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
 # ’bboard.apps.BboardConfig’,
-    'event.apps.EventConfig',
+    'event.apps.EventConfig',  # приложение event
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig', # Добавляем приложение тут
+    'accounts.apps.AccountsConfig',  # Добавляем приложение Accounts тут
 ]
 
 MIDDLEWARE = [
@@ -57,7 +57,9 @@ ROOT_URLCONF = 'superdiploma.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),
+                 os.path.join(BASE_DIR, 'event', 'templates', 'event'),
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,3 +135,4 @@ MEDIA_URL = '/media/'
 
 # Путь хранения картинок
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+

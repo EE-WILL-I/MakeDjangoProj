@@ -7,15 +7,17 @@ from django.dispatch import receiver
 class Users(models.Model):
     MAN = 'M'
     WOMAN = 'W'
+    AMERICAN = 'N'
     SEX = [
         (MAN, 'Мужской'),
         (WOMAN, 'Женский'),
+        (AMERICAN, 'Средний'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    second_name = models.CharField(max_length=50, verbose_name='Отчество', help_text='Отчество пользователя')
+    second_name = models.CharField(null=True, blank=True, max_length=50, verbose_name='Отчество', help_text='Отчество пользователя')
     age = models.IntegerField(null=True, verbose_name='Возраст', help_text='Полных лет пользователя')
     city = models.CharField(max_length=50, verbose_name='Город', help_text='Город, в котором живет пользователь')
-    sex = models.CharField(max_length=1, choices=SEX, default=MAN, help_text='Пол пользователя')
+    sex = models.CharField(max_length=1, verbose_name='Пол', choices=SEX, default=MAN, help_text='Пол пользователя')
 
     class Meta:
         verbose_name_plural = 'Пользователи'
@@ -32,7 +34,7 @@ class Event(models.Model):
         (END, 'Закончилось'),
     ]
     name = models.CharField(max_length=50, verbose_name='Название', help_text='Название мероприятия')
-    desctiption = models.TextField(null=True, blank=True, verbose_name='Описание', help_text='Описание мероприятия')
+    description = models.TextField(null=True, blank=True, verbose_name='Описание', help_text='Описание мероприятия')
     logo = models.ImageField(max_length=50, verbose_name='Логотип', help_text='Логотип мероприятия', upload_to='images/')
     status_event = models.CharField(max_length=1, choices=STATUS_EVENT, default=DONTSTART, help_text='Статус мероприятия')
     data_start = models.DateField(null=True, verbose_name='Дата начала', help_text='Дата начала мероприятия')
@@ -71,6 +73,7 @@ class UsersEvents(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Users.objects.create(user=instance)
+
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):

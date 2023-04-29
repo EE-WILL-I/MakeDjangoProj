@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.template import loader
 from .models import Event
 
+
 def index(request):
     template = loader.get_template('event/index.html')
     Event.objects.all()

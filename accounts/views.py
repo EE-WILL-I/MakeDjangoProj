@@ -2,53 +2,59 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import render, redirect
-
-from accounts.forms import SignupForm1, SignupForm2
-from event.form import UserForm, UsersForm
-
+from accounts.forms import UserForm, UsersForm
+from event.forms import UserForm, UsersForm
+from django.contrib.auth.forms import UserCreationForm
 
 
 @login_required
 @transaction.atomic
-def update_users(request):
+def update_user(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
         users_form = UsersForm(request.POST, instance=request.user.users)
         if user_form.is_valid() and users_form.is_valid():
             user_form.save()
             users_form.save()
-            messages.success(request, ('Your profile was successfully updated!'))
-            return redirect('settings:users')
+            messages.success(request, 'Your profile was successfully updated!')
+            return redirect('/')
         else:
-            messages.error(request, ('Please correct the error below.'))
+            messages.error(request, 'Please correct the error below.')
     else:
         user_form = UserForm(instance=request.user)
         users_form = UsersForm(instance=request.user.users)
-    return render(request, 'registration/signup.html', {
+    return render(request, 'registration/update.html', {
         'user_form': user_form,
         'users_form': users_form
     })
 
-@login_required
+
 @transaction.atomic
 def signup(request):
     if request.method == 'POST':
-        form1 = SignupForm1(request.POST, instance=request.user)
-        form2 = SignupForm2(request.POST, instance=request.user.users)
-        if form1.is_valid() and form2.is_valid():
+        form_user_sys = UserCreationForm(request.POST)
+        form_user = UserForm(request.POST)
+        form_users = UsersForm(request.POST)
+        if form_user.is_valid() and form_users.is_valid() and form_user_sys.is_valid():
             # save form in the memory not in database
-            user1 = form1.save(commit=False)
-            user2 = form2.save()
-            user1.save()
-            user2.save()
-            messages.success(request, ('Your profile was successfully updated!'))
-            return redirect('index.html')
+            user_sys = form_user_sys.save(commit=False)  # системная форма
+            user = form_user.save(commit=False)  # расширенная системная форма
+            users = form_users.save(commit=False)  # дополненная форма пользователя
+            user_sys.first_name = user.first_name  # переписываем данные из формы 2 в форму 1
+            user_sys.last_name = user.last_name
+            user_sys.email = user.email
+            user_sys.save()  # сохраняем системную форму User
+            users.user_id = user_sys.id
+            users.save()  # сохраняем дополнительную форму Users
+            messages.success(request, 'Your profile was successfully updated!')
+            return redirect('event/index.html')
     else:
-        form1 = SignupForm1()
-        form2 = SignupForm2()
+        form_user_sys = UserCreationForm()
+        form_user = UserForm()
+        form_users = UsersForm()
     return render(request, 'registration/signup.html', {
-        'form1': form1,
-        'form2': form2
+        'form_user_sys': form_user_sys,
+        'form_user': form_user,
+        'form_users': form_users
     })
-
 
