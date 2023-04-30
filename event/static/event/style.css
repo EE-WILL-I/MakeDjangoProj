@@ -12,11 +12,6 @@ body, h1, h2, h3, h4, h5, h6 {
 	font-family: 'Open Sans', sans-serif;
 }
 
-html, body {
-	min-height: 100%;
-	overflow: hidden;
-}
-
 html {
     font-family: sans-serif;
     -webkit-text-size-adjust: 100%;
@@ -303,7 +298,8 @@ output {
 
 .media,.media-body {
     overflow: hidden;
-    zoom:1}
+    zoom:1
+}
 
 .media-body {
     width: 10000px

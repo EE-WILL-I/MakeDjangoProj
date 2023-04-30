@@ -33,12 +33,12 @@ class Event(models.Model):
         (STARTING, 'В процессе'),
         (END, 'Закончилось'),
     ]
-    name = models.CharField(max_length=50, verbose_name='Название', help_text='Название мероприятия')
+    name = models.CharField(max_length=150, verbose_name='Название', help_text='Название мероприятия')
     description = models.TextField(null=True, blank=True, verbose_name='Описание', help_text='Описание мероприятия')
-    logo = models.ImageField(max_length=50, verbose_name='Логотип', help_text='Логотип мероприятия', upload_to='images/')
-    status_event = models.CharField(max_length=1, choices=STATUS_EVENT, default=DONTSTART, help_text='Статус мероприятия')
-    data_start = models.DateField(null=True, verbose_name='Дата начала', help_text='Дата начала мероприятия')
-    data_end = models.DateField(null=True, verbose_name='Дата конца', help_text='Дата конца мероприятия')
+    logo = models.ImageField(null=True, blank=True, max_length=50, verbose_name='Логотип', help_text='Логотип мероприятия', upload_to='images/')
+    status_event = models.CharField(max_length=1, choices=STATUS_EVENT, default=DONTSTART, verbose_name='Статус', help_text='Статус мероприятия')
+    data_start = models.DateField(verbose_name='Дата начала', help_text='Дата начала мероприятия')
+    data_end = models.DateField(verbose_name='Дата конца', help_text='Дата конца мероприятия')
     city = models.TextField(max_length=50, verbose_name='Город', help_text='Город проведения мероприятия')
 
     class Meta:

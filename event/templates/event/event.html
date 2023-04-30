@@ -1,5 +1,5 @@
 {% load static %}
-<!DOCTYPE html>
+
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'event/style.css' %}">
@@ -7,25 +7,38 @@
     <title> Событие</title>
 </head>
 <body>
-<h1> {{ current_event.name }}</h1>
-<p> Описание события: {{ current_event.description }} </p>
-<p> Логотип события: </p>
-<img src="{{ current_event.logo.url}}" alt="img_error" style="max-height:300px">
-{% if current_event.status_event == '1'  %}
-    <p> Статус события: Не началось </p>
-{% endif %}
-{% if current_event.status_event == '2'  %}
-    <p> Статус события: В процессе </p>
-{% endif %}
-{% if current_event.status_event == '3'  %}
-    <p> Статус события: Завершено </p>
-{% endif %}
-</p>
-<p> Дата начала события: {{ current_event.data_start }} </p>
-<p> Дата конца события: {{ current_event.data_end }} </p>
-<p> Место проведения: {{ current_event.city }} </p>
-<a href="{% url 'index' %} ">Назад</a>
-
-
+    <h1> {{ event.name }}</h1>
+    <div>
+        <p> Описание события:
+        {% if event.description != '' %}
+            {{ event.description }} </p>
+        {% else %}
+        Отсутствует </p>
+        {% endif %}
+        <p> Логотип события:
+        {% if event.logo != '' %}
+        </p><img src="{{ event.logo.url}}" alt="img_error" style="max-height:300px">
+        {% else %}
+        Отсутствует </p>
+        {% endif %}
+        {% if event.status_event == '1'  %}
+            <p> Статус события: Не началось </p>
+        {% endif %}
+        {% if event.status_event == '2'  %}
+            <p> Статус события: В процессе </p>
+        {% endif %}
+        {% if event.status_event == '3'  %}
+            <p> Статус события: Завершено </p>
+        {% endif %}
+        </p>
+        <p> Дата начала события: {{ event.data_start }} </p>
+        <p> Дата конца события: {{ event.data_end }} </p>
+        <p> Место проведения: {{ event.city }} </p>
+    </div>
+    <div>
+        <a href="{% url 'updateevent' event.pk %} ">Редактировать</a>
+        <a href="{% url 'deleteevent' event.pk %} ">Удалить</a>
+        <a href="{% url 'index' %} ">Назад</a>
+    </div>
 </body>
 </html>

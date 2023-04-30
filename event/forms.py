@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Event, Users
-from django.contrib.auth.forms import UserCreationForm
 
 
 class UserForm(forms.ModelForm):
@@ -19,4 +18,12 @@ class UsersForm(forms.ModelForm):
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = ('name', 'description', 'logo', 'status_event', 'data_start', 'data_end', 'city')
+        fields = ('__all__')
+        widgets = {
+            'data_start': forms.DateInput(
+                attrs={'type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)', 'class': 'form-control'}
+            ),
+            'data_end': forms.DateInput(
+                attrs={'type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)', 'class': 'form-control'}
+            )
+        }

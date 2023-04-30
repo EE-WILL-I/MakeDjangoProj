@@ -48,7 +48,7 @@ def signup(request):
             users.user = user_sys
             users.save()  # сохраняем дополнительную форму Users
             login(request, user_sys, backend='django.contrib.auth.backends.ModelBackend')
-            messages.success(request, 'Your profile was successfully updated!')
+            messages.success(request, 'Your profile was successfully created!')
             return redirect('index')
     else:
         form_user_sys = UserCreationForm()

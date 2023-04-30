@@ -20,8 +20,13 @@
         </div>
         <div>
         {% for event in events %}
-            <p>{{ event.name }} <a href="{% url 'by_event' event.pk %}">Подробнее</a><p>
+            <p>{{ event.name }}
+                <a href="{% url 'by_event' event.pk %}">Подробнее</a>
+                <a href="{% url 'signevent' event.pk %} ">Учавствовать</a>
+                <a href="{% url 'deleteevent' event.pk %} ">Удалить</a>
+            </p>
         {% endfor %}
         </div>
+        <p><a href="{% url 'newevent' %}">Создать событие</a></p>
 </body>
 </html>

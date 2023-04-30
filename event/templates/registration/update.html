@@ -9,10 +9,11 @@
 <body>
   <h2>Обновить данные</h2>
   <form method="post">
-    {% csrf_token %}
-    {{ user_form.as_p }}
-    {{ users_form.as_p }}
-    <button type="submit">Сохранить изменения</button>
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {{ users_form.as_p }}
+      <button type="submit">Сохранить изменения</button>
+      <p><a href="{% url 'index' %}">Назад</a></p>
   </form>
 </body>
 </html>

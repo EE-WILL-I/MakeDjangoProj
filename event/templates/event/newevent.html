@@ -1,0 +1,18 @@
+{% load static %}
+
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'event/style.css' %}">
+    <meta charset="UTF-8">
+    <title>Создать событие</title>
+</head>
+<body>
+    <h2>Создание события</h2>
+    <form method="post" enctype='multipart/form-data'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Создать событие</button>
+        <p><a href="{% url 'index' %}">Назад</a></p>
+    </form>
+</body>
+</html>
