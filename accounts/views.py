@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
@@ -44,10 +45,11 @@ def signup(request):
             user_sys.last_name = user.last_name
             user_sys.email = user.email
             user_sys.save()  # сохраняем системную форму User
-            users.user_id = user_sys.id
+            users.user = user_sys
             users.save()  # сохраняем дополнительную форму Users
+            login(request, user_sys, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, 'Your profile was successfully updated!')
-            return redirect('event/index.html')
+            return redirect('index')
     else:
         form_user_sys = UserCreationForm()
         form_user = UserForm()

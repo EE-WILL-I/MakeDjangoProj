@@ -1,5 +1,4 @@
 {% load static %}
-<!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'event/style.css' %}">
@@ -7,24 +6,22 @@
     <title>Главная</title>
 </head>
 <body>
-<h1>Страница регистрации на события</h1>
-<div>
-    {% if user.is_authenticated %}
-        <p>Здравствуй, {{ user.first_name }}!</p>
-        <p><a href="{% url 'update_user' %}">Изменить данные</a></p>
-        <p><a href="{% url 'logout' %}">Выйти из аккаунта</a></p>
-      {% else %}
-        <p>You are not logged in.</p>
-        <p><a href="{% url 'login' %}">Войти в аккаунт</a></p>
-        <p><a href="{% url 'signup' %}">Создать учетную запись</a></p>
-      {% endif %}
-    {% block content %}
-    {% endblock content %}
-</div>
-<div>
-{% for event in events %}
-    <p>{{ event.name }} <a href="{% url 'by_event' event.pk %}">Подробнее</a><p>
-{% endfor %}
-</div>
+    <h1>Страница регистрации на события</h1>
+        <div>
+            {% if user.is_authenticated %}
+                <p>Здравствуй, {{ user.first_name }}!</p>
+                <p><a href="{% url 'update_user' %}">Изменить данные</a></p>
+                <p><a href="{% url 'logout' %}">Выйти из аккаунта</a></p>
+              {% else %}
+                <p>You are not logged in.</p>
+                <p><a href="{% url 'login' %}">Войти в аккаунт</a></p>
+                <p><a href="{% url 'signup' %}">Создать учетную запись</a></p>
+              {% endif %}
+        </div>
+        <div>
+        {% for event in events %}
+            <p>{{ event.name }} <a href="{% url 'by_event' event.pk %}">Подробнее</a><p>
+        {% endfor %}
+        </div>
 </body>
 </html>

@@ -1,12 +1,18 @@
-{% extends 'event/index.html' %}
+{% load static %}
 
-{% block content %}
-<h2>Обновить данные</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ user_form.as_p }}
-  {{ users_form.as_p }}
-  <button type="submit">Сохранить изменения</button>
-</form>
-
-{% endblock content %}
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'event/style.css' %}">
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+<body>
+  <h2>Обновить данные</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    {{ users_form.as_p }}
+    <button type="submit">Сохранить изменения</button>
+  </form>
+</body>
+</html>

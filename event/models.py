@@ -67,14 +67,3 @@ class UsersEvents(models.Model):
         verbose_name_plural = 'События и участники'
         verbose_name = 'Событие и участник'
         ordering = ['-id_status', '-date_reg', '-rating']
-
-
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Users.objects.create(user=instance)
-
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.users.save()
