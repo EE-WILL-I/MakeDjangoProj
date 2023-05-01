@@ -6,9 +6,9 @@ from .models import UsersEvents
 
 
 class EvAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'logo', 'status_event', 'data_start', 'data_end', 'city')
-    list_display_links = ('name', 'description', 'logo', 'status_event', 'data_start', 'data_end', 'city')
-    search_fields = ('name', 'description', 'logo', 'status_event', 'data_start', 'data_end', 'city')
+    list_display = ('name', 'description', 'logo', 'status', 'data_start', 'data_end', 'city')
+    list_display_links = ('name', 'description', 'logo', 'status', 'data_start', 'data_end', 'city')
+    search_fields = ('name', 'description', 'logo', 'status', 'data_start', 'data_end', 'city')
 
 
 admin.site.register(Event, EvAdmin)

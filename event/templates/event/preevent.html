@@ -1,0 +1,13 @@
+{% block content %}
+  <p>
+    {% if event.logo != '' %}
+    </p><img src="{{ event.logo.url }}" alt="img_error" style="max-height:100px">
+    {% endif %}
+    <h3>{{ event.name }}</h3>
+    <a href="{% url 'by_event' event.pk %}">Подробнее</a>
+    <a href="{% url 'signevent' event.pk %} ">Учавствовать</a>
+    {% if request.user.id == event.user_id or request.user.is_superuser %}
+    <a href="{% url 'deleteevent' event.pk %} " onclick="clicked(event)">Удалить</a>
+    {% endif %}
+  </p>
+{% endblock content %}

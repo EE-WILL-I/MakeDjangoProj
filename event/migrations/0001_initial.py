@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(help_text='Название мероприятия', max_length=50, verbose_name='Название')),
                 ('desctiption', models.TextField(blank=True, help_text='Описание мероприятия', null=True, verbose_name='Описание')),
                 ('logo', models.ImageField(help_text='Логотип мероприятия', max_length=50, upload_to='images/', verbose_name='Логотип')),
-                ('status_event', models.CharField(choices=[('1', 'Не началось'), ('2', 'В процессе'), ('3', 'Закончилось')], default='1', help_text='Статус мероприятия', max_length=1)),
+                ('status', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='status.id')),
                 ('data_start', models.DateField(help_text='Дата начала мероприятия', null=True, verbose_name='Дата начала')),
                 ('data_end', models.DateField(help_text='Дата конца мероприятия', null=True, verbose_name='Дата конца')),
                 ('city', models.TextField(help_text='Город проведения мероприятия', max_length=50, verbose_name='Город')),
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Событие',
                 'verbose_name_plural': 'События',
-                'ordering': ['-status_event', '-data_start', '-data_end'],
+                'ordering': ['-status', '-data_start', '-data_end'],
             },
         ),
         migrations.CreateModel(

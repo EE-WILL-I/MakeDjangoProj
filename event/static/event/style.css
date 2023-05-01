@@ -1,5 +1,6 @@
 p {
     font-size: 16pt;
+    font-family: verdana;
 }
 
 h1 {
@@ -10,6 +11,31 @@ h1 {
 
 body, h1, h2, h3, h4, h5, h6 {
 	font-family: 'Open Sans', sans-serif;
+}
+
+span {
+    font-family: math;
+}
+
+div {
+    outline: dashed;
+    margin: 50px;
+    padding: 20px;
+}
+
+.event {
+    outline: none;
+    padding: 5px;
+    margin: 0;
+}
+
+.event1 {
+    outline: none;
+    min-width: 350px;
+    padding-left: 10px;
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
 
 html {

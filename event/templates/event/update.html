@@ -7,12 +7,23 @@
     <title>Редактировать событие</title>
 </head>
 <body>
-    <h2>Редактирование события</h2>
-    <form method="post" enctype='multipart/form-data'>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Сохранить</button>
-        <p><a href="{% url 'index' %}">Назад</a></p>
-    </form>
+    <div>
+        <h2>Редактирование события</h2>
+        <form method="post" enctype='multipart/form-data'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            {{ connection.as_p }}
+            <button type="submit">Сохранить</button>
+            <p><a href="{% url 'index' %}">Назад</a></p>
+        </form>
+    </div>
+    {% if user_events %}
+    <div>
+        <h2>Редактировать участников</h2>
+        {% for uevent in user_events %}
+        <p><a href="{% url 'updateuserevent' uevent.id %}">Редактировать участника: {% include 'event/userevent.html' %}</a></p>
+        {% endfor %}
+    </div>
+    {% endif %}
 </body>
 </html>

@@ -6,6 +6,14 @@
     <meta charset="UTF-8">
     <title> Событие</title>
 </head>
+<script>
+function clicked(e)
+{
+    if(!confirm('Вы уверены?')) {
+        e.preventDefault();
+    }
+}
+</script>
 <body>
     <h1> {{ event.name }}</h1>
     <div>
@@ -17,27 +25,30 @@
         {% endif %}
         <p> Логотип события:
         {% if event.logo != '' %}
-        </p><img src="{{ event.logo.url}}" alt="img_error" style="max-height:300px">
+        </p><img src="{{ event.logo.url }}" alt="img_error" style="max-height:300px">
         {% else %}
         Отсутствует </p>
         {% endif %}
-        {% if event.status_event == '1'  %}
-            <p> Статус события: Не началось </p>
-        {% endif %}
-        {% if event.status_event == '2'  %}
-            <p> Статус события: В процессе </p>
-        {% endif %}
-        {% if event.status_event == '3'  %}
-            <p> Статус события: Завершено </p>
-        {% endif %}
+        <p> Статус события: {{ event.status }}</p>
         </p>
         <p> Дата начала события: {{ event.data_start }} </p>
         <p> Дата конца события: {{ event.data_end }} </p>
         <p> Место проведения: {{ event.city }} </p>
     </div>
+    {% if user_events %}
     <div>
-        <a href="{% url 'updateevent' event.pk %} ">Редактировать</a>
-        <a href="{% url 'deleteevent' event.pk %} ">Удалить</a>
+        <h2>Участники</h2>
+        {% for uevent in user_events %}
+            <p>{% include 'event/userevent.html' %}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div>
+        {% if request.user.id == event.user_id or request.user.is_superuser %}
+        <a href="{% url 'updateevent' event.pk %} ">Редактировать мероприятие</a>
+        <a href="{% url 'deleteevent' event.pk %} " onclick="clicked(event)">Удалить</a>
+        {% endif %}
+        <a href="{% url 'signevent' event.pk %} ">Учавствовать</a>
         <a href="{% url 'index' %} ">Назад</a>
     </div>
 </body>

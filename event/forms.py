@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Event, Users
+from django.forms import models
+
+from .models import Event, Users, UsersEvents, Status
+from datetime import datetime
 
 
 class UserForm(forms.ModelForm):
@@ -27,3 +30,9 @@ class EventForm(forms.ModelForm):
                 attrs={'type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)', 'class': 'form-control'}
             )
         }
+
+
+class UsersEventsForm(forms.ModelForm):
+    class Meta:
+        model = UsersEvents
+        fields = ('link_certificate', 'rating', 'status')

@@ -5,28 +5,39 @@
     <meta charset="UTF-8">
     <title>Главная</title>
 </head>
+<script>
+function clicked(e)
+{
+    if(!confirm('Вы уверены?')) {
+        e.preventDefault();
+    }
+}
+</script>
 <body>
     <h1>Страница регистрации на события</h1>
         <div>
             {% if user.is_authenticated %}
-                <p>Здравствуй, {{ user.first_name }}!</p>
+                <h2>Здравствуй, {{ user.first_name }} {{ user.last_name }}!</h2>
                 <p><a href="{% url 'update_user' %}">Изменить данные</a></p>
                 <p><a href="{% url 'logout' %}">Выйти из аккаунта</a></p>
               {% else %}
-                <p>You are not logged in.</p>
+                <h2>Вы не вошли в аккаунт</h2>
                 <p><a href="{% url 'login' %}">Войти в аккаунт</a></p>
                 <p><a href="{% url 'signup' %}">Создать учетную запись</a></p>
               {% endif %}
         </div>
         <div>
-        {% for event in events %}
-            <p>{{ event.name }}
-                <a href="{% url 'by_event' event.pk %}">Подробнее</a>
-                <a href="{% url 'signevent' event.pk %} ">Учавствовать</a>
-                <a href="{% url 'deleteevent' event.pk %} ">Удалить</a>
-            </p>
-        {% endfor %}
+            <h2><u>Мероприятия:</u></h2>
+            {% for event in events %}
+                {% include 'event/preevent.html' %}
+            <hr/>
+            {% endfor %}
+            <h2><u>Мои мероприятия:</u></h2>
+            {% for event in user_event %}
+                {% include 'event/preevent.html' %}
+            <hr/>
+            {% endfor %}
+            <p><a href="{% url 'newevent' %}">Создать событие</a></p>
         </div>
-        <p><a href="{% url 'newevent' %}">Создать событие</a></p>
 </body>
 </html>

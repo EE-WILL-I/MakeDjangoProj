@@ -1,0 +1,6 @@
+{% block content %}
+    {{ uevent.date_reg }} : {{ uevent.users.user.first_name }} {{ uevent.users.user.last_name }} {{ uevent.users.second_name }} ({{ uevent.users.user.username }}) : {{ uevent.status }}
+        {% if uevent.rating %}
+            {{ uevent.rating }} место
+        {% endif %}
+{% endblock content %}
