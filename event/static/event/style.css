@@ -1,16 +1,22 @@
 p {
     font-size: 16pt;
     font-family: verdana;
+    color: white;
 }
 
 h1 {
-    font-size: 15 Opt;
+    font-size: 20 Opt;
     text-transform: uppercase;
     text-align: center;
+    color: white;
 }
 
 body, h1, h2, h3, h4, h5, h6 {
 	font-family: 'Open Sans', sans-serif;
+}
+
+li {
+    color: white;
 }
 
 span {
@@ -21,6 +27,7 @@ div {
     outline: dashed;
     margin: 50px;
     padding: 20px;
+    background-color: #495d74
 }
 
 .event {
@@ -38,6 +45,11 @@ div {
     align-items: center;
 }
 
+.event2 {
+    display: flex;
+    align-items: center;
+}
+
 html {
     font-family: sans-serif;
     -webkit-text-size-adjust: 100%;
@@ -45,7 +57,8 @@ html {
 }
 
 body {
-    margin: 0
+    margin: 0;
+    background-color: #87abcb;
 }
 
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {
@@ -76,8 +89,8 @@ abbr[title] {
 }
 
 h1 {
-    margin: .67em 0;
-    font-size: 2em
+    font-size: 40px;
+    line-height: 1.45;
 }
 
 mark {
@@ -100,7 +113,8 @@ select {
 }
 
 select {
-    text-transform: none
+    text-transform: none;
+    color: black;
 }
 
 html {
@@ -113,7 +127,7 @@ body {
     font-size: 14px;
     line-height: 1.42857143;
     color: #333;
-    background-color: #fff
+    background-color: #87abcb;
 }
 
 select {
@@ -123,7 +137,7 @@ select {
 }
 
 a {
-    color: #337ab7;
+    color: white;
     text-decoration: none
 }
 
@@ -151,8 +165,8 @@ img {
 .h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6 {
     font-family: inherit;
     font-weight: 500;
-    line-height: 1.1;
-    color: inherit
+    line-height: 1.5;
+    color: white;
 }
 
 .h1,.h2,.h3,h1,h2,h3 {
@@ -163,10 +177,6 @@ img {
 .h4,.h5,.h6,h4,h5,h6 {
     margin-top: 10px;
     margin-bottom: 10px
-}
-
-.h1,h1 {
-    font-size: 36px
 }
 
 .h2,h2 {
@@ -466,3 +476,6 @@ table {
     border-spacing: 0;
 }
 
+h1 {
+    color: #603232;
+}

@@ -1,5 +1,5 @@
 from django.urls import path
-from event.views import index, by_event, new_event, delete_event, sign_event, update_event, update_userevent, delete_userevent
+from event.views import index, by_event, new_event, delete_event, sign_event, update_event, update_userevent, delete_userevent, delete_userevent_pk, download
 
 urlpatterns = [
     path('', index, name='index'),
@@ -10,7 +10,9 @@ urlpatterns = [
     path('signevent/<int:event_id>/', sign_event, name='signevent'),
     path('updateevent/<int:event_id>/', update_event, name='updateevent'),
     path('updateuserevent/<int:ue_id>/', update_userevent, name='updateuserevent'),
-    path('deleteuserevent/<int:ue_id>/', delete_userevent, name='deleteuserevent'),
+    path('deleteuserevent/<int:ue_id>/', delete_userevent_pk, name='deleteuserevent'),
+    path('deleteuserevent/<int:event_id>/<int:user_id>/', delete_userevent, name='deleteuserevent'),
+    path('download/<str:path>/', download, name='download'),
 ]
 
 

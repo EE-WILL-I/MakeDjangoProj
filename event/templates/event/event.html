@@ -16,30 +16,44 @@ function clicked(e)
 </script>
 <body>
     <h1> {{ event.name }}</h1>
-    <div>
-        <p> Описание события:
-        {% if event.description != '' %}
-            {{ event.description }} </p>
-        {% else %}
-        Отсутствует </p>
-        {% endif %}
+    <div class="event2">
+        <div class="event">
         <p> Логотип события:
         {% if event.logo != '' %}
-        </p><img src="{{ event.logo.url }}" alt="img_error" style="max-height:300px">
+        </p><img src="{{ event.logo.url }}" alt="img_error" style="max-height:400px">
         {% else %}
         Отсутствует </p>
         {% endif %}
-        <p> Статус события: {{ event.status }}</p>
+        </div>
+        <div class="event" style="padding-left: 20px">
+        <p> Описание события:
+        {% if event.description != '' %}
+            <span>{{ event.description }}</span></p>
+        {% else %}
+        <span>Отсутствует</span></p>
+        {% endif %}
+        <p> Статус события: <span>{{ event.status }}</span></p>
         </p>
-        <p> Дата начала события: {{ event.data_start }} </p>
-        <p> Дата конца события: {{ event.data_end }} </p>
-        <p> Место проведения: {{ event.city }} </p>
+        <p> Дата начала события: <span>{{ event.data_start }}</span></p>
+        <p> Дата конца события: <span>{{ event.data_end }}</span></p>
+        <p> Место проведения: <span>{{ event.city }}</span></p>
+        </div>
     </div>
+    {% if event in ues %}
+    <div>
+        <h2>Мой статус</h2>
+        <p>Статус: {{ ue.status }}</p>
+        <p>Рейтинг: {{ ue.rating }}</p>
+        {% if ue.link_certificate %}
+        <p><a href="{{ ue.link_certificate.url }}">Загрузить сертификат</a></p>
+        {% endif %}
+    </div>
+    {% endif %}
     {% if user_events %}
     <div>
         <h2>Участники</h2>
         {% for uevent in user_events %}
-            <p>{% include 'event/userevent.html' %}</p>
+        <p><a href="{% url 'by_account' uevent.users.user_id %}">{% include 'event/userevent.html' %}</a></p>
         {% endfor %}
     </div>
     {% endif %}
@@ -48,7 +62,13 @@ function clicked(e)
         <a href="{% url 'updateevent' event.pk %} ">Редактировать мероприятие</a>
         <a href="{% url 'deleteevent' event.pk %} " onclick="clicked(event)">Удалить</a>
         {% endif %}
+        {% if not event.status_id == 3 %}
+        {% if event in ues %}
+        <a href="{% url 'deleteuserevent' event.pk request.user.id %} ">Покинуть мероприятие</a>
+        {% else %}
         <a href="{% url 'signevent' event.pk %} ">Учавствовать</a>
+        {% endif %}
+        {% endif %}
         <a href="{% url 'index' %} ">Назад</a>
     </div>
 </body>

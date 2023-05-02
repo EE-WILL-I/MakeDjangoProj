@@ -1,0 +1,38 @@
+{% load static %}
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'event/style.css' %}">
+    <meta charset="UTF-8">
+    <title>Профиль участника</title>
+</head>
+<script>
+function clicked(e)
+{
+    if(!confirm('Вы уверены?')) {
+        e.preventDefault();
+    }
+}
+</script>
+<body>
+    {% if request.user == users.user %}
+    <h1>Ваш профиль ({{ users.user.username }})</h1>
+    {% else %}
+    <h1>Профиль участника {{ users.user.first_name }} {{ users.user.last_name }} {{ users.second_name }} ({{ users.user.username }})</h1>
+    {% endif %}
+    <div>
+        <h2>Профиль</h2>
+        <p>Имя: <span>{{ users.user.first_name }}</span></p>
+        <p>Фамилия: <span>{{ users.user.last_name }}</span></p>
+        <p>Отчество: <span>{{ users.second_name }}</span></p>
+        <p>Логин: <span>({{ users.user.username }})</span></p>
+        <p>Пол: <span>{{ users.sex }}</span></p>
+        <p>Возраст: <span>{{ users.age }}</span></p>
+        <p>Город: <span>{{ users.city }}</span></p>
+        {% if request.user == users.user or request.user.is_superuser %}
+        <p><a href="{% url 'update_user' %}">Изменить данные</a></p>
+        <p><a href="{% url 'delete_account' request.user.id %}" onclick="clicked(event)">Удалить аккаунт</a></p>
+        {% endif %}
+        <a href="{% url 'index' %} ">Назад</a>
+    </div>
+</body>
+</html>

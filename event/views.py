@@ -1,5 +1,5 @@
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
 from django.template import loader
 from .models import Event, UsersEvents, Users
@@ -8,13 +8,30 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.urls import reverse
+import os
+from django.conf import settings
 
 
 def index(request):
     template = loader.get_template('event/index.html')
-    events = Event.objects.exclude(user_id=request.user.id).order_by('-name')
-    user_event = Event.objects.filter(user_id=request.user.id)
-    context = {'events': events, 'user_event': user_event}
+    if request.user.is_authenticated:
+        events = Event.objects.exclude(user_id=request.user.id).order_by('-name')
+        user_event = Event.objects.filter(user_id=request.user.id)
+        try:
+            user_id = Users.objects.get(user_id=request.user.id)
+            ues = UsersEvents.objects.filter(users_id=user_id)
+            ues1 = []
+            for ue in ues:
+                ues1 += Event.objects.filter(pk=ue.event_id)
+        except UsersEvents.DoesNotExist:
+            ues1 = []
+        except Users.DoesNotExist:
+            ues1 = []
+    else:
+        events = Event.objects.all().order_by('-name')
+        ues1 = []
+        user_event = []
+    context = {'events': events, 'user_event': user_event, 'ues': ues1}
     return HttpResponse(template.render(context, request))
 
 
@@ -22,7 +39,9 @@ def index(request):
 @transaction.atomic
 def new_event(request):
     if request.method == 'POST':
-        form = EventForm(request.POST, request.FILES)
+        updated_request = request.POST.copy()
+        updated_request.update({'user': request.user})
+        form = EventForm(updated_request, request.FILES)
         if form.is_valid():
             event = form.save(commit=False)
             event.save()
@@ -48,7 +67,8 @@ def update_event(request, event_id):
         else:
             messages.error(request, 'Please correct the error below.')
     else:
-        form = EventForm(instance=Event.objects.get(pk=event_id))
+        event = Event.objects.get(pk=event_id)
+        form = EventForm(instance=event, initial={'data_start': event.data_start, 'data_end': event.data_end})
     try:
         ues = UsersEvents.objects.filter(event_id=event_id)
     except UsersEvents.DoesNotExist:
@@ -61,7 +81,7 @@ def update_event(request, event_id):
 def update_userevent(request, ue_id):
     user_event = UsersEvents.objects.get(pk=ue_id)
     if request.POST:
-        form = UsersEventsForm(request.POST, instance=UsersEvents.objects.get(pk=ue_id))
+        form = UsersEventsForm(request.POST, request.FILES, instance=UsersEvents.objects.get(pk=ue_id))
         if form.is_valid():
             form.save(commit=False)
             form.users_id = user_event.users_id
@@ -77,9 +97,18 @@ def update_userevent(request, ue_id):
 
 @login_required
 @transaction.atomic
-def delete_userevent(request, ue_id):
+def delete_userevent_pk(request, ue_id):
     event = UsersEvents.objects.get(pk=ue_id)
     event_id = Event.objects.get(pk=event.event_id).id
+    event.delete()
+    return HttpResponseRedirect(reverse('by_event', args=(event_id,)))
+
+
+@login_required
+@transaction.atomic
+def delete_userevent(request, event_id, user_id):
+    ue_id = UsersEvents.objects.get(users_id=Users.objects.get(user_id=user_id), event_id=event_id).id
+    event = UsersEvents.objects.get(pk=ue_id)
     event.delete()
     return HttpResponseRedirect(reverse('by_event', args=(event_id,)))
 
@@ -97,14 +126,28 @@ def by_event(request, event_id):
     events = Event.objects.all()
     current_event = Event.objects.get(pk=event_id)
     try:
-        ues = UsersEvents.objects.filter(event_id=event_id)
+        user_events = UsersEvents.objects.filter(event_id=event_id)
     except UsersEvents.DoesNotExist:
-        ues = None
-    context = {'events': events, 'event': current_event, 'user_events': ues}
+        user_events = None
+    try:
+        user_id = Users.objects.get(user_id=request.user.id)
+        ues = UsersEvents.objects.filter(users_id=user_id)
+        ue1 = UsersEvents.objects.get(users_id=user_id, event_id=event_id)
+        ues1 = []
+        for ue in ues:
+            ues1 += Event.objects.filter(pk=ue.event_id)
+    except UsersEvents.DoesNotExist:
+        ues1 = []
+        ue1 = []
+    except Users.DoesNotExist:
+        ues1 = []
+        ue1 = []
+    context = {'events': events, 'event': current_event, 'user_events': user_events, 'ues': ues1, 'ue': ue1}
     return render(request, 'event/event.html', context)
 
 
 @login_required()
+@transaction.atomic
 def sign_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     user = request.user
@@ -115,6 +158,13 @@ def sign_event(request, event_id):
     )
     return HttpResponseRedirect(reverse('by_event', args=(event_id,)))
 
-# class EventListView(ListView):
-#     model = Event
-#     template_name = 'event/index.html'
+
+@login_required()
+def download(request, path):
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404

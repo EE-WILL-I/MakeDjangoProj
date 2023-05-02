@@ -48,7 +48,7 @@ class Event(models.Model):
     data_start = models.DateField(verbose_name='Дата начала', help_text='Дата начала мероприятия')
     data_end = models.DateField(verbose_name='Дата конца', help_text='Дата конца мероприятия')
     city = models.CharField(max_length=80, verbose_name='Город', help_text='Город проведения мероприятия')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Создатель', help_text='Логин создателя')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, verbose_name='Создатель', help_text='Логин создателя')
 
     def __str__(self):
         return self.name
@@ -75,7 +75,7 @@ class UsersEvents(models.Model):
     users = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='Пользователь', help_text='Логин пользователя')
     status = models.ForeignKey(UserStatus, on_delete=models.CASCADE, default=1, null=True, verbose_name='Статус участника')
     date_reg = models.DateField(default=timezone.now, verbose_name='Дата регистрации', help_text='Дата регистрации на меропрятии')
-    link_certificate = models.FileField(null=True, blank=True, verbose_name='Сертификат', help_text='Сертификат участника мероприятия')
+    link_certificate = models.FileField(null=True, blank=True, verbose_name='Сертификат', help_text='Сертификат участника мероприятия', upload_to='files/')
     rating = models.IntegerField(null=True, blank=True, verbose_name='Занимеемое место', help_text='Занимеемое место на мероприятии')
 
     class Meta:

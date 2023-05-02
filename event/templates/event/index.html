@@ -18,7 +18,7 @@ function clicked(e)
         <div>
             {% if user.is_authenticated %}
                 <h2>Здравствуй, {{ user.first_name }} {{ user.last_name }}!</h2>
-                <p><a href="{% url 'update_user' %}">Изменить данные</a></p>
+                <p><a href="{% url 'by_account' request.user.id %}">Мой аккаунт</a></p>
                 <p><a href="{% url 'logout' %}">Выйти из аккаунта</a></p>
               {% else %}
                 <h2>Вы не вошли в аккаунт</h2>
